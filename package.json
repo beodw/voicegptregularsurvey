@@ -1,0 +1,15 @@
+{
+  "name": "voicegptregularsurvey",
+  "version": "1.0.0",
+  "description": "API for submitting regular survey",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Beod Wilson",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild-register": "^3.4.2",
+    "mongodb": "^5.7.0"
+  }
+}
