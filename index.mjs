@@ -30,19 +30,51 @@ export const handler = async (event) => {
         if(!surveyRecord){
             await regularsurveys.insertOne({...payload})
         }
-       // User is submitting further feedback after already submitting
-       else if(payload.furtherFeedBack){
+        else if(payload.registrationEmail){
             await regularsurveys.updateOne(
-                {_id: surveyRecord._id},
-                {
-                    ...surveyRecord, 
-                    furtherFeedBack:
-                    [
-                        ...surveyRecord.furtherFeedBack,
-                        payload.furtherFeedBack
-                    ]
-                }
-            )
+                    {oauthCode: surveyRecord.oauthCode},
+                    {
+                        "$set":
+                            {
+                                ...surveyRecord, 
+                                registrationEmail: payload.registrationEmail
+                            }
+                    }
+                )
+        }
+       // User is submitting further feedback after already submitting
+       else if(payload.furtherAdditionalThoughts){
+        if(surveyRecord.furtherAdditionalThoughts){
+                await regularsurveys.updateOne(
+                    {oauthCode: surveyRecord.oauthCode},
+                    {
+                        "$set":
+                            {
+                                ...surveyRecord, 
+                                furtherAdditionalThoughts:
+                                [
+                                    ...surveyRecord.furtherAdditionalThoughts,
+                                    payload.furtherAdditionalThoughts
+                                ]
+                            }
+                    }
+                )
+        }
+        else{ 
+                  await regularsurveys.updateOne(
+                    {oauthCode: surveyRecord.oauthCode},
+                    {
+                        "$set":
+                            {
+                                ...surveyRecord, 
+                                furtherAdditionalThoughts:
+                                [
+                                    payload.furtherAdditionalThoughts
+                                ]
+                            }
+                    }
+                )
+            }   
         }
         else {
             return {status:400, error:"User has already filled out this survey."}
